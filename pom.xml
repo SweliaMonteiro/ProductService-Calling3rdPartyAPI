@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Calling3rdPartyAPI</artifactId>
+    <artifactId>ProductService-Calling3rdPartyAPI</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Calling3rdPartyAPI</name>
-    <description>Calling3rdPartyAPI</description>
+    <name>ProductService-Calling3rdPartyAPI</name>
+    <description>ProductService-Calling3rdPartyAPI</description>
     <properties>
         <java.version>17</java.version>
     </properties>
