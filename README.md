@@ -5,7 +5,7 @@
 You are working on a project that requires you to call a third party API. Implement the required functions that will call the Fake Store API behind the scenes to get the work done.
 
 ## Requirements
-1. Us the following API to get the data: [Fake Store API](https://fakestoreapi.com/docs)
+1. Use the following API to get the data: [Fake Store API](https://fakestoreapi.com/docs)
 2. Implement the following functions:
     - `getProductById(productId)`: This function should return the details of the product with the given `productId`.
     - `getAllProducts()`: This function should return a list of all the products available in the store.
