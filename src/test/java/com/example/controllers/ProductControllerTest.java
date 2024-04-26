@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -70,13 +72,19 @@ class ProductControllerTest {
         product2.setDescription("Product 2 Description");
         product2.setPrice(200.0);
 
+        List<Product> products = new ArrayList<>();
+        products.add(product1);
+        products.add(product2);
+
         // Mocking the getAllProducts method of ProductService to return a list of products
-        when(productService.getAllProducts()).thenReturn(List.of(product1, product2));
+        when(productService.getAllProducts()).thenReturn(products);
         // Calling the getAllProducts method of ProductController to get the list of products
         List<Product> actualProducts = productController.getAllProducts().getBody();
         // Asserting the expected list of products with the actual list of products returned by the getAllProducts method of ProductController
         // If both are same then the test case will pass otherwise it will fail
-        assertEquals(List.of(product1, product2), actualProducts);
+        assertEquals(products, actualProducts);
+        // assertIterableEquals method is used to compare two lists of products in a more readable way than assertEquals
+        assertIterableEquals(products, actualProducts);
     }
 
 
