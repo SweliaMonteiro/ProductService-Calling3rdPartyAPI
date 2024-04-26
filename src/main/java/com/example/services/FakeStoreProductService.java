@@ -145,4 +145,5 @@ public class FakeStoreProductService implements ProductService {
         // Convert response to Product
         return convertFakeStoreProductDtoToProduct(response);
     }
+
 }

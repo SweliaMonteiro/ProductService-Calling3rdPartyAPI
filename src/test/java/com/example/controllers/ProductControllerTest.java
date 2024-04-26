@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -45,16 +43,16 @@ class ProductControllerTest {
 
     @Test
     void invalidGetProductById() throws ProductNotFoundException {
-        // Mocking the getProductById method of ProductService to return null
-        when(productService.getProductById(100L)).thenReturn(null);
-        // Calling the getProductById method of ProductController to get the product object
-        // As the product object is null, it will throw ProductNotFoundException
+        // Mocking the getProductById method of ProductService to throw ProductNotFoundException
+        when(productService.getProductById(100L)).thenThrow(ProductNotFoundException.class);
+        // Calling the getProductById method of ProductController with an invalid id
+        // If ProductNotFoundException is thrown then the test case will pass otherwise it will fail
         assertThrows(ProductNotFoundException.class, () -> productController.getProductById(100L));
     }
 
 
     @Test
-    void getAllProducts() {
+    void validGetAllProducts() {
         Product product1 = new Product();
         product1.setId(1L);
         product1.setTitle("Product 1");
@@ -74,5 +72,15 @@ class ProductControllerTest {
         // Asserting the expected list of products with the actual list of products returned by the getAllProducts method of ProductController
         // If both are same then the test case will pass otherwise it will fail
         assertEquals(List.of(product1, product2), actualProducts);
+    }
+
+
+    @Test
+    void invalidGetAllProducts() {
+        // Mocking the getAllProducts method of ProductService to throw NullPointerException
+        when(productService.getAllProducts()).thenThrow((NullPointerException.class));
+        // Calling the getAllProducts method of ProductController
+        // If NullPointerException is thrown then the test case will pass otherwise it will fail
+        assertThrows(NullPointerException.class, () -> productController.getAllProducts());
     }
 }
