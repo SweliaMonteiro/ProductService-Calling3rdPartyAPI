@@ -13,9 +13,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 
+// @SpringBootTest annotation is used to specify that the tests are for Spring Boot application
 @SpringBootTest
 class ProductControllerTest {
 
+    // @Autowired annotation is used to inject the actual ProductController class
     @Autowired
     private ProductController productController;
 
