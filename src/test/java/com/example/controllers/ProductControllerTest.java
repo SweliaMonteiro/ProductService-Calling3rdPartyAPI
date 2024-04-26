@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.dtos.FakeStoreProductDto;
 import com.example.exceptions.ProductNotFoundException;
 import com.example.models.Product;
 import com.example.services.ProductService;
@@ -25,6 +26,7 @@ class ProductControllerTest {
 
     @Test
     void validGetProductById() throws ProductNotFoundException {
+        // Creating a product object
         Product product = new Product();
         product.setId(1L);
         product.setTitle("Product 1");
@@ -53,6 +55,7 @@ class ProductControllerTest {
 
     @Test
     void validGetAllProducts() {
+        // Creating a list of products
         Product product1 = new Product();
         product1.setId(1L);
         product1.setTitle("Product 1");
@@ -82,5 +85,31 @@ class ProductControllerTest {
         // Calling the getAllProducts method of ProductController
         // If NullPointerException is thrown then the test case will pass otherwise it will fail
         assertThrows(NullPointerException.class, () -> productController.getAllProducts());
+    }
+
+
+    @Test
+    void validCreateProduct() {
+        // Creating a FakeStoreProductDto object
+        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
+        fakeStoreProductDto.setId(1L);
+        fakeStoreProductDto.setTitle("Product 1");
+        fakeStoreProductDto.setDescription("Product 1 Description");
+        fakeStoreProductDto.setPrice(100.0);
+
+        // Creating a product object
+        Product product = new Product();
+        product.setId(1L);
+        product.setTitle("Product 1");
+        product.setDescription("Product 1 Description");
+        product.setPrice(100.0);
+
+        // Mocking the createProduct method of ProductService to return the product object
+        when(productService.createProduct(fakeStoreProductDto)).thenReturn(product);
+        // Calling the createProduct method of ProductController to create the product object
+        Product actualProduct = productController.createProduct(fakeStoreProductDto).getBody();
+        // Asserting the expected product object with the actual product object returned by the createProduct method of ProductController
+        // If both are same then the test case will pass otherwise it will fail
+        assertEquals(product, actualProduct);
     }
 }

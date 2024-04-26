@@ -20,3 +20,4 @@ You are working on a project that requires you to call a third party API. Implem
 5. Use RestTemplate to call the Fake Store APIs.
 6. Use @Configuration and @Bean to create a RestTemplate bean.
 7. Use @ControllerAdvice and @ExceptionHandler to handle exceptions.
+8. Write JUnit tests for each function. You can use @MockBean to mock the RestTemplate calls and only test the functionality of your functions. 
