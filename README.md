@@ -21,3 +21,4 @@ You are working on a project that requires you to call a third party API. Implem
 6. Use @Configuration and @Bean to create a RestTemplate bean.
 7. Use @ControllerAdvice and @ExceptionHandler to handle exceptions.
 8. Write JUnit tests for each function. You can use @MockBean to mock the RestTemplate calls and only test the functionality of your functions. 
+9. For getProductById(productId), connect to User Service and validate the User token using validateToken API to check if the user is authenticated. If the user is not authenticated, throw an exception with status code 401. If the user is authenticated, return the product details.

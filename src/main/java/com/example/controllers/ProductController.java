@@ -1,13 +1,15 @@
 package com.example.controllers;
 
 import com.example.dtos.FakeStoreProductDto;
-import com.example.exceptions.ProductNotFoundException;
+import com.example.userServiceUtils.UserDto;
+import com.example.exceptions.*;
 import com.example.models.Product;
 import com.example.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 
@@ -17,6 +19,26 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+
+    // ********************* START - AUTHORIZATION USING USER SERVICE ********************* //
+    @Autowired
+    private RestTemplate restTemplate;  // RestTemplate is used to make HTTP requests to user service API
+
+    // Get Product with given Id with Authentication Token in Header - This is a protected route and requires a valid token to access product data with given Id
+    @GetMapping("/auth/{id}")
+    public ResponseEntity<Product> getProductByIdAuth(@PathVariable("id") long id, @RequestHeader("token") String token) throws ProductNotFoundException {
+        // Validate the token by calling the User Service API with the token in the header and get the user details if token is valid else return UNAUTHORIZED status code
+        try {
+            UserDto validatedUserDto = restTemplate.getForObject("http://localhost:8080/user/validate/"+token, UserDto.class);
+        }
+        catch(Exception ex) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        // If token is valid then return the product with the given id
+        return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
+    }
+    // ********************* END - AUTHORIZATION USING USER SERVICE ********************* //
 
 
     // Get Product with given Id
