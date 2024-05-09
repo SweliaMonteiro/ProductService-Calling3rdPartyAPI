@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 
 @ControllerAdvice
@@ -44,6 +45,17 @@ public class ExceptionHandlers {
         ProductNotFoundDto productNotFoundDto = new ProductNotFoundDto();
         productNotFoundDto.setMessage(ex.getMessage());
         return new ResponseEntity<>(productNotFoundDto, HttpStatus.NOT_FOUND);
+    }
+
+
+    // Exception Handler for HttpClientErrorException, takes HttpClientErrorException as parameter
+    @ExceptionHandler(HttpClientErrorException.class)
+    public ResponseEntity<ExceptionDto> handleHttpClientErrorException(HttpClientErrorException ex) {
+        // If HttpClientErrorException is thrown then return status code from the exception along with message and resolution
+        ExceptionDto exceptionDto = new ExceptionDto();
+        exceptionDto.setMessage(ex.toString());
+        exceptionDto.setResolution("Please check the request URL and token as it might be incorrect");
+        return new ResponseEntity<>(exceptionDto, ex.getStatusCode());
     }
 
 }

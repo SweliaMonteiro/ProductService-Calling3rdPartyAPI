@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
@@ -27,15 +28,11 @@ public class ProductController {
 
     // Get Product with given Id with Authentication Token in Header - This is a protected route and requires a valid token to access product data with given Id
     @GetMapping("/auth/{id}")
-    public ResponseEntity<Product> getProductByIdAuth(@PathVariable("id") long id, @RequestHeader("token") String token) throws ProductNotFoundException {
-        // Validate the token by calling the User Service API with the token in the header and get the user details if token is valid else return UNAUTHORIZED status code
-        try {
-            UserDto validatedUserDto = restTemplate.getForObject("http://localhost:8080/user/validate/"+token, UserDto.class);
-        }
-        catch(Exception ex) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        // If token is valid then return the product with the given id
+    public ResponseEntity<Product> getProductByIdAuth(@PathVariable("id") long id, @RequestHeader("token") String token) throws HttpClientErrorException, ProductNotFoundException {
+        // Validate the token by calling the User Service API with the token in the header and get the user details if token is valid
+        // else HttpClientErrorException is thrown as Status code returned is UNAUTHORIZED, this is handled by ExceptionHandlers
+        restTemplate.getForObject("http://localhost:8080/user/validate/"+token, UserDto.class);
+        // If token is valid then no exception is thrown, return the product with the given id
         return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
     // ********************* END - AUTHORIZATION USING USER SERVICE ********************* //
