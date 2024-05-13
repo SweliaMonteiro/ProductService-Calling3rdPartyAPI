@@ -26,7 +26,7 @@ You are working on a project that requires you to call a third party API. Implem
 For getProductById(productId), connect to User Service and validate the User token using validateToken API from UserService to check if the user is authenticated. If the user is not authenticated, throw an exception with status code 401. If the user is authenticated, return the product details. Also add the required Dto classes for the User Service API.
 
 #### Integration with UserService-SpringAuthorizationServerUsingJPA
-1. Refer the documentation for creating resource server: https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
+1. Refer the documentation for creating resource server: [OAuth 2.0 Resource Server JWT](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html)
 2. Make Product Service as a Resource Server by adding "spring-boot-starter-oauth2-resource-server" dependency.
 3. Configure the Authorization Server URL in the application.properties file using "spring.security.oauth2.resourceserver.jwt.issuer-uri".
 4. Add SecurityFilterChain in SecurityConfig class to configure the security for the resource server. All the endpoints should be authenticated.
