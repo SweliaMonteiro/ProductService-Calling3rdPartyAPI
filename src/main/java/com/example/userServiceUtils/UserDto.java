@@ -5,6 +5,8 @@ import lombok.Setter;
 import java.util.List;
 
 
+// Class for getting data from UserService
+
 @Getter
 @Setter
 public class UserDto {
