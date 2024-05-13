@@ -31,4 +31,4 @@ For getProductById(productId), connect to User Service and validate the User tok
 3. Configure the Authorization Server URL in the application.properties file using "spring.security.oauth2.resourceserver.jwt.issuer-uri".
 4. Add SecurityFilterChain in SecurityConfig class to configure the security for the resource server. All the endpoints should be authenticated.
 5. Modify SecurityFilterChain to allow any requests coming to "/products/{id}" endpoint only with ADMIN role.
-6. For testing, use Postman as a client to get the access token from the Authorization Server and hit "/products/{id}" endpoint with the access token. 
+6. For testing, use Postman as a client to get the access token from the Authorization Server(UserService-SpringAuthorizationServerUsingJPA) and hit "/products/{id}" endpoint with the access token. 
