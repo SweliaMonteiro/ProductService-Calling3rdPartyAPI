@@ -4,6 +4,7 @@ import com.example.dtos.*;
 import com.example.exceptions.*;
 import com.example.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpMessageConverterExtractor;
@@ -17,6 +18,9 @@ public class FakeStoreProductService implements ProductService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
 
     public Product convertFakeStoreProductDtoToProduct(FakeStoreProductDto fakeStoreProductDto) {
@@ -35,28 +39,43 @@ public class FakeStoreProductService implements ProductService {
 
     @Override
     public Product getProductById(long id) throws ProductNotFoundException {
-        // Call Fake Store API to get product data with the given id, convert the responseType query parameter to FakeStoreProductDto
+        // Check if product with the given id is present in Redis, if present then return the product. It is stored in ProductId map with key as "Product_"+id
+        Product product = (Product) redisTemplate.opsForHash().get("ProductId", "Product_"+id);
+        if(product != null) {
+            return product;
+        }
+        // Else call Fake Store API to get product data with the given id, convert the responseType query parameter to FakeStoreProductDto
         FakeStoreProductDto response = restTemplate.getForObject("https://fakestoreapi.com/products/"+id, FakeStoreProductDto.class);
         if(response == null) {
             throw new ProductNotFoundException("Product with id " + id + " not found");
         }
         // Convert response to Product
-        return convertFakeStoreProductDtoToProduct(response);
+        product = convertFakeStoreProductDtoToProduct(response);
+        // If product is not found in Redis then store the product as a value in ProductId map of Redis with key as "Product_"+id
+        redisTemplate.opsForHash().put("ProductId", "Product_"+id, product);
+        return product;
     }
 
 
     @Override
     public List<Product> getAllProducts() {
-        // Call Fake Store API to get all products, convert the responseType to Array of FakeStoreProductDto because if you use List then Generics are erased at runtime
+        // Check if list of all products are present in Redis, if present then return the products. It is stored in Products map with key as AllProducts
+        List<Product> products = (List<Product>)redisTemplate.opsForHash().get("Products", "AllProducts");
+        if(products != null) {
+            return products;
+        }
+        // Else call Fake Store API to get all products, convert the responseType to Array of FakeStoreProductDto because if you use List then Generics are erased at runtime
         FakeStoreProductDto[] responseList = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
         if(responseList == null || responseList.length == 0) {
             throw new NullPointerException("No products found");
         }
         // Convert all elements of responseList to List of Product
-        List<Product> products = new ArrayList<>();
+        products = new ArrayList<>();
         for(FakeStoreProductDto response:responseList) {
             products.add(convertFakeStoreProductDtoToProduct(response));
         }
+        // If products are not found in Redis then store the products as a value in Products map of Redis with key as AllProducts
+        redisTemplate.opsForHash().put("Products", "AllProducts", products);
         return products;
     }
 

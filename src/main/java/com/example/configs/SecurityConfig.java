@@ -35,6 +35,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // RequestMatchers are used to authorize the requests based on the request path i.e. /products/{id}
                         // HasAnyAuthority is used to authorize the requests based on the authorities i.e. SCOPE_ADMIN
+
+                        // Comment this line while using Redis as we are not using authentication while testing Redis
                         .requestMatchers("/products/{id}").hasAnyAuthority("SCOPE_ADMIN")
                         // Any other requests will be permitted
                         .anyRequest().permitAll()
