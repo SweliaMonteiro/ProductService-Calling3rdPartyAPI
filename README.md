@@ -41,5 +41,5 @@ For getProductById(productId), connect to User Service and validate the User tok
 5. Implement Redis cache for the following functions:
     - `getProductById(productId)`: If the product details are already present in the cache, return the product details from the cache. Else fetch the product details from the Fake Store API and store it in the cache.
     - `getAllProducts()`: If the products list is already present in the cache, return the products list from the cache. Else fetch the products list from the Fake Store API and store it in the cache.
-6. Test the cache by hitting the endpoints multiple times in Postman and check if the data is fetched from the cache or not depending on the time taken to fetch the data.
-
+6. Start the Redis server using the command `redis-server` in the terminal.
+7. Test the cache by hitting the endpoints multiple times in Postman and check if the data is fetched from the cache or not depending on the time taken to fetch the data.
