@@ -66,6 +66,10 @@ public class FakeStoreProductService implements ProductService {
         }
         // Else call Fake Store API to get all products, convert the responseType to Array of FakeStoreProductDto because if you use List then Generics are erased at runtime
         FakeStoreProductDto[] responseList = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
+
+        // To get all the products along with the status code using ResponseEntity
+        // ResponseEntity<FakeStoreProductDto[]> responseList = restTemplate.getForEntity("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
+
         if(responseList == null || responseList.length == 0) {
             throw new NullPointerException("No products found");
         }
